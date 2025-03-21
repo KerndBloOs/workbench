@@ -1,0 +1,6 @@
+customCommands:
+  - key: "P"
+    command: "git pull && git push"
+    context: "global"
+    loadingText: "Pulling and pushing..."
+    description: "pull and push changes"
