@@ -1,3 +1,3 @@
 # workbench
 
-Dotfiles for Devpods
+dotfiles for devpods
