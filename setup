@@ -26,6 +26,7 @@ packages=(
   k9s
   direnv
   kubectx
+  talosctl
 )
 
 # install each package from array
