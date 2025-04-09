@@ -31,6 +31,17 @@ fi
 export EDITOR='nvim'
 export EDITOR='nvim'
 
+# weather
+setvar() {
+    if [ -z "$loc" ]; then
+        echo "insert location"
+        return 1
+    fi
+    export "location=$loc"
+}
+alias wv='curl "https://wttr.in/$loc?1&F&q"'
+alias w='curl "https://wttr.in/$loc?format=1"'
+
 ###### path variables  #######
 export PATH="$PATH:/opt/nvim-linux64/bin"
 
@@ -39,10 +50,6 @@ alias gd='cd $HOME/git-repos/dotfiles; ls -la --color=auto'
 alias gr='cd $HOME/git-repos/'
 
 ###### alias-commands ######
-alias wvro='curl "https://wttr.in/rosenheim?1&F&q"'
-alias wro='curl "https://wttr.in/rosenheim?format=1"'
-alias wvri='curl "https://wttr.in/riedering?1&F&q"'
-alias wri='curl "https://wttr.in/riedering?format=1"'
 alias t='/usr/bin/tmux attach || /usr/bin/tmux'
 alias c='clear'
 alias v='nvim'
@@ -56,4 +63,4 @@ alias t='tmux'
 # use fp to do a fzf search and preview the files
 alias fp="fzf --preview 'cat --style=numbers --color=always --line-range :500 {}'"
 # search for a file with fzf and open it in vim
-alias vf='v $(fp)'
+alias vf='vim $(fp)'
