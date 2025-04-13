@@ -1,0 +1,12 @@
+[tools]
+
+neovim = "latest"
+tmux = "latest"
+ripgrep = "latest"
+bat = "latest"
+fzf = "latest"
+fd = "latest"
+lazygit = "latest"
+starship = "latest"
+chezmoi = "latest"
+usage = "latest"   # for mise completion
