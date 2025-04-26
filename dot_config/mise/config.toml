@@ -1,7 +1,7 @@
 [tools]
 
 neovim = "latest"
-tmux = "latest"
+tmux = "3.5"
 ripgrep = "latest"
 bat = "latest"
 btop = "latest"
