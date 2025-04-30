@@ -1,6 +1,6 @@
 # workbench
 
-> My dotfiles
+> dotfiles
 
 [![bash](https://img.shields.io/badge/-bash-green?logo=gnubash)](https://www.gnu.org/software/bash/)
 [![git](https://img.shields.io/badge/-git-orange?logo=git)](https://git-scm.com/)
@@ -10,7 +10,7 @@
 ## ✨ Explanation
 
 This repository is my dotfiles backup on github.
-I use them on all my systems and symlink them with [GNU stow](http://www.gnu.org/software/stow/).
+I use them on all my systems and devcontainer.
 
 If you are not sure what the **dotfiles** are, I recommend to
 click [this link](https://dotfiles.github.io/) and read it through.
