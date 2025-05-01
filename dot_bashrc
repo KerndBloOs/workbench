@@ -61,7 +61,7 @@ fi
 
 # fzf
 if command -v fzf > /dev/null ; then
-  source <(fzf --bash)
+  eval "$(fzf --bash)" 
 fi
 
 # mise
@@ -89,16 +89,26 @@ alias ll='ls -lgha --color=auto'
 alias la='ls -lathr'
 alias ds='devpod ssh'
 alias key='eval $(ssh-agent -s); ssh-add'
+alias his='cat $HOME/.histfile | fzf
 
-setvar() {
-    if [ -z "$loc" ]; then
-        echo "insert location"
-        return 1
-    fi
-    export "location=$loc"
+# weather
+w () { # weather for specific location
+  curl "https://wttr.in/$1?1&F&q"
 }
-alias wv='curl "https://wttr.in/$loc?1&F&q"'
-alias w='curl "https://wttr.in/$loc?format=1"'
+
+wv () { # weather forecast for specific location
+  curl "https://wttr.in/$2?format=1"
+}
+
+#setvar() {
+#    if [ -z "$loc" ]; then
+#        echo "insert location"
+#        return 1
+#    fi
+#    export "location=$loc"
+#}
+#alias wv='curl "https://wttr.in/$loc?1&F&q"'
+#alias w='curl "https://wttr.in/$loc?format=1"'
 
 if command -v bat > /dev/null ; then
   alias cat="bat"
