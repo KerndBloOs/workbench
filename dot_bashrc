@@ -4,8 +4,8 @@
 ###### bash-config #######
 
 # load bash_alias if present
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f $HOME/.bash_aliases ]; then
+    . $HOME/.bash_aliases
 fi
 
 # set editing mode
@@ -89,7 +89,7 @@ alias ll='ls -lgha --color=auto'
 alias la='ls -lathr'
 alias ds='devpod ssh'
 alias key='eval $(ssh-agent -s); ssh-add'
-alias his='cat $HOME/.histfile | fzf
+alias his='cat $HOME/.histfile | fzf'
 
 # weather
 w () { # weather for specific location
