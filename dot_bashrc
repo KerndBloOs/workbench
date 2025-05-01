@@ -4,8 +4,8 @@
 ###### bash-config #######
 
 # load bash_alias if present
-if [ -f $HOME/.bash_aliases ]; then
-    . $HOME/.bash_aliases
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
 fi
 
 # set editing mode
@@ -99,16 +99,6 @@ w () { # weather for specific location
 wv () { # weather forecast for specific location
   curl "https://wttr.in/$2?format=1"
 }
-
-#setvar() {
-#    if [ -z "$loc" ]; then
-#        echo "insert location"
-#        return 1
-#    fi
-#    export "location=$loc"
-#}
-#alias wv='curl "https://wttr.in/$loc?1&F&q"'
-#alias w='curl "https://wttr.in/$loc?format=1"'
 
 if command -v bat > /dev/null ; then
   alias cat="bat"
