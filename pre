@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Define packages
+debian_packages=("curl" "build-essential" "openssh-client" "vim" "tmux")
+
+arch_packages=("curl" "git" "htop")
+
+# Check if a package is installed (Debian)
+is_installed_debian() {
+    dpkg -s "$1" &> /dev/null
+}
+
+# Check if a package is installed  (Arch)
+is_installed_arch() {
+    pacman -Qi "$1" &> /dev/null
+}
+
+# Detect OS and install packages
+if [ -f /etc/debian_version ]; then
+    echo "Debian-based system"
+    sudo apt update
+    for pkg in "${debian_packages[@]}"; do
+        if is_installed_debian "$pkg"; then
+            echo "$pkg is already installed."
+        else
+            echo "Installing $pkg..."
+            sudo apt install -y "$pkg"
+        fi
+    done
+
+elif [ -f /etc/arch-release ]; then
+    echo "Arch-based system"
+    sudo pacman -Sy
+    for pkg in "${arch_packages[@]}"; do
+        if is_installed_arch "$pkg"; then
+            echo "$pkg is already installed."
+        else
+            echo "Installing $pkg..."
+            sudo pacman -S --noconfirm "$pkg"
+        fi
+    done
+
+else
+    echo "Unsupported OS."
+    exit 1
+fi
