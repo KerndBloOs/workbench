@@ -12,18 +12,16 @@ return {
         },
       },
     },
-      defaults = {
-        path_display = { "smart" },
-        mappings = {
-          i = {
-            ["<C-k>"] = actions.move_selection_previous, -- move to prev result
-            ["<C-j>"] = actions.move_selection_next, -- move to next result
-            ["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
-            ["<C-t>"] = trouble_telescope.open,
-          },
+    defaults = {
+      path_display = { "smart" },
+      mappings = {
+        i = {
+          ["<C-k>"] = actions.move_selection_previous, -- move to prev result
+          ["<C-j>"] = actions.move_selection_next,     -- move to next result
         },
       },
     },
+  },
   {
     "telescope.nvim",
     dependencies = {
@@ -37,15 +35,14 @@ return {
   {
     "nvim-telescope/telescope-symbols.nvim",
   },
-
   -- Custom ripgrep configuration:
 
   -- I want to search in hidden/dot files.
-  "--hidden"
+  -- "--hidden"
   --
   -- I don't want to search in the `.git` directory.
-  "--glob")
-  "!**/.git/*")
+  --j"--glob")
+  --j"!**/.git/*")
   --
   --  I want to follow symbolic links
   -- "-L"
