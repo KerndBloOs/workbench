@@ -10,7 +10,7 @@ vim.g.lazyvim_check_order = false
 vim.opt.ignorecase = true
 
 -- scrolling
-vim.opt.number = false
+vim.opt.number = true 
 vim.opt.relativenumber = false
 vim.opt.scrolloff = 8
 
@@ -38,4 +38,3 @@ vim.opt.scrolloff = 8
 --
 -- opt.vim_markdown_conceal = 0
 --
--- vim.g.mkdp_browser = "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"

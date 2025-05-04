@@ -2,6 +2,9 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 --
+-- Prevent overwriting register on paste in visual mode
+vim.keymap.set("x", "p", [["_dP]], { desc = "Paste without overwriting yank" })
+
 vim.keymap.set("n", "<leader>p", '<cmd>lua require("cmp").setup { enabled = true }<cr>', { desc = "Enable completion" })
 vim.keymap.set(
 	"n",

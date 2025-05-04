@@ -7,5 +7,5 @@ syntax on
 " Add numbers to each line on the left-hand side.
 set number
 
-" Set tab width to 2 columns.
-set tabstop=2
+" Set tab width to 4 columns.
+set tabstop=4
