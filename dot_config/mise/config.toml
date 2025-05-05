@@ -9,4 +9,5 @@ fd = "latest"
 lazygit = "latest"
 starship = "latest"
 chezmoi = "latest"
-usage = "latest"   # for mise completion
+node = "latest"
+usage = "latest"    # for mise completion

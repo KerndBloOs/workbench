@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Define packages
-debian_packages=("curl" "build-essential" "openssh-client" "vim" "tmux")
+debian_packages=("curl" "build-essential" "openssh-client" "vim" "tmux" "unzip")
 
-arch_packages=("curl" "build-essential" "openssh-client" "vim" "tmux")
+arch_packages=("curl" "build-essential" "openssh-client" "vim" "tmux" "unzip")
 
 # Check if a package is installed (Debian)
 is_installed_debian() {
