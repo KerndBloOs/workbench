@@ -112,7 +112,7 @@ alias lg='lazygit'
 
 # directories
 alias gd='cd $HOME/git-repos/dotfiles; ls -la --color=auto'
-alias gr='cd $HOME/git-repos/'
+alias gr='cd $HOME/git-repos/; ls -la --color=auto'
 
 # credits to mischavandenburg
 # use fp to do a fzf search and preview the files
