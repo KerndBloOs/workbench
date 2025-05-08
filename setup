@@ -6,7 +6,7 @@ XDG_CONFIG_HOME="$HOME/.config"
 
 if ! command -v chezmoi >/dev/null; then
   #sh -c "$(curl -fsLS get.chezmoi.io)" -- apply --source $PWD
-  sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply git@github.com:KerndBloOs/workbench.git
+  sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply git@github.com:KerndBloOs/workbench.git --verbose
 fi
 
 exit 0

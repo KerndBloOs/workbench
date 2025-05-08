@@ -54,11 +54,6 @@ if command -v nvim > /dev/null ; then
   export VISUAL="nvim"
 fi
 
-# starship
-if command -v starship > /dev/null ; then
-  eval "$(starship init bash)"
-fi
-
 # fzf
 if command -v fzf > /dev/null ; then
   eval "$(fzf --bash)" 
@@ -120,3 +115,9 @@ alias gr='cd $HOME/git-repos/; ls -la --color=auto'
 alias fp="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'"
 # search for a file with fzf and open it in vim
 alias vf='vim $(fp)'
+
+# load starship
+if command -v starship > /dev/null ; then
+  eval "$(starship init bash)"
+fi
+
