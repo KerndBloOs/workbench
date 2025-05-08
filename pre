@@ -44,3 +44,14 @@ else
   echo "Unsupported OS."
   exit 1
 fi
+
+# Check if Docker is installed
+if ! command -v docker &>/dev/null; then
+  echo "Docker not found. Installing..."
+  cd /tmp
+  curl -fsSL https://get.docker.com -o get-docker.sh
+  chmod +x get-docker.sh
+  sudo sh get-docker.sh
+else
+  echo "Docker is already installed."
+fi
