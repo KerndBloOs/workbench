@@ -87,9 +87,10 @@ alias e='exit'
 alias ..="cd .."
 alias ll='ls -lgha --color=auto'
 alias la='ls -lathr'
-alias ds='devpod ssh'
 alias key='eval $(ssh-agent -s); ssh-add'
 alias his='cat $HOME/.histfile | fzf'
+alias d='devpod'
+alias ds='devpod ssh'
 
 # weather
 w () { # weather for specific location
