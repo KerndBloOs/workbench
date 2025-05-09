@@ -107,7 +107,7 @@ alias gc='git commit -m'
 alias lg='lazygit'
 
 # directories
-alias gd='cd $HOME/git-repos/dotfiles; ls -la --color=auto'
+alias gd='cd $DOTFILES; ls -la --color=auto'
 alias gr='cd $HOME/git-repos/; ls -la --color=auto'
 
 # credits to mischavandenburg
