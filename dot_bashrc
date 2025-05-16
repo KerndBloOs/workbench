@@ -87,6 +87,9 @@ alias his='cat $HOME/.histfile | fzf'
 alias d='devpod'
 alias ds='devpod ssh'
 
+# devcontainer
+alias ws='cd /workspaces/$DEVPOD_WORKSPACE_ID'
+
 # weather
 w () { # weather for specific location
   curl "https://wttr.in/$1?1&F&q"
