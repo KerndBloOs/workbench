@@ -77,6 +77,7 @@ fi
 
 alias t='/usr/bin/tmux attach || /usr/bin/tmux'
 alias c='clear'
+alias catp='bat --plain'
 alias v='nvim'
 alias e='exit'
 alias ..="cd .."
