@@ -109,7 +109,7 @@ alias gc='git commit -m'
 alias gcl='git clone'
 alias gp='git push'
 alias gr='git reset'
-alias gs='git status --short'
+alias gs='git status'
 alias gu='git pull'
 alias lg='lazygit'
 
