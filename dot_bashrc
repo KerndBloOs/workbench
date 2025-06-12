@@ -79,7 +79,7 @@ alias t='/usr/bin/tmux attach || /usr/bin/tmux'
 alias c='clear'
 alias catp='bat --plain --paging=never'
 alias v='nvim'
-alias e='exit'
+alias ex='exit'
 alias ..="cd .."
 alias ll='ls -lgha --color=auto'
 alias la='ls -lathr'
