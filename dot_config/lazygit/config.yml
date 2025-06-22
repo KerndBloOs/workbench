@@ -1,0 +1,8 @@
+git:
+  showIcons: true
+
+paging:
+  useConfig: true
+
+os:
+  editPreset: "nvim"
