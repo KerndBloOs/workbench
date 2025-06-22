@@ -34,10 +34,13 @@ if [ -d "/home/linuxbrew/.linuxbrew" ]; then
 fi
 
 # history
-export HISTFILE=$HOME/.histfile
+export HISTSIZE=500
 export HISTSIZE=50000
-export SAVEHIST=50000
-export HISTCONTROL=ignorespace
+export HISTTIMEFORMAT="%F %T" # add timestamp to history
+export HISTCONTROL=erasedups:ignoredups:ignorespace
+
+shopt -s histappend # causes bash to append to history instead of overwriting it
+PROMPT_COMMAND='history -a'
 
 # directories
 export GR="$HOME/git-repos"
@@ -84,7 +87,7 @@ alias ..="cd .."
 alias ll='ls -lgha --color=auto'
 alias la='ls -lathr'
 alias key='eval $(ssh-agent -s); ssh-add'
-alias his='cat $HOME/.histfile | fzf'
+alias his='history | fzf'
 alias d='devpod'
 alias ds='devpod ssh'
 
