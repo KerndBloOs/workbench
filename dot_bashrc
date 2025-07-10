@@ -39,6 +39,10 @@ export HISTSIZE=50000
 export HISTTIMEFORMAT="%F %T" # add timestamp to history
 export HISTCONTROL=erasedups:ignoredups:ignorespace
 
+# temp directory
+export TMPDIR=/tmp/$USER
+
+
 shopt -s histappend # causes bash to append to history instead of overwriting it
 PROMPT_COMMAND='history -a'
 
