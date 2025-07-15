@@ -60,7 +60,7 @@ if command -v devpod >/dev/null 2>&1; then
  
     # Export the environment variables
     export TMPDIR="$TMPDIR"
-
+fi
 ###### tools ######
 
 # neovim
