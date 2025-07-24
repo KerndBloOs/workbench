@@ -8,7 +8,10 @@ os:
   editPreset: "nvim"
 
 customCommands:
-  - key: "P" # Capital P for pull-then-push
-    command: "git pull --rebase && git push"
+  - key: "P"
+    command: "git pull --rebase --autostash && git push"
     description: "Pull (rebase) then push"
     context: "global"
+    loadingText: "pulling and pushing..."
+    stream: true
+    showOutput: true
