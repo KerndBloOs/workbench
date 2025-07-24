@@ -6,3 +6,9 @@ paging:
 
 os:
   editPreset: "nvim"
+
+customCommands:
+  - key: "P" # Capital P for pull-then-push
+    command: "git pull --rebase && git push"
+    description: "Pull (rebase) then push"
+    context: "global"
