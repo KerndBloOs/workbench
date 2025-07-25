@@ -11,7 +11,7 @@ vim.opt.ignorecase = true
 
 -- scrolling
 vim.opt.number = true 
-vim.opt.relativenumber = false
+vim.opt.relativenumber = true
 vim.opt.scrolloff = 8
 
 -- wrap / break
