@@ -1,10 +1,16 @@
+--return {
+--    "tokyonight.nvim",
+--    opts = {
+--      transparent = true,
+--      styles = {
+--      	sidebars = "transparent",
+--	floats = "transparent",
+--    },
+--  },
+--}
 return {
-    "tokyonight.nvim",
-    opts = {
-      transparent = true,
-      styles = {
-      	sidebars = "transparent",
-	floats = "transparent",
-    },
-  },
+	"rebelot/kanagawa.nvim",
+	config = function()
+		vim.cmd.colorscheme("kanagawa")
+	end,
 }
