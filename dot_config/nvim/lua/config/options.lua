@@ -10,9 +10,12 @@ vim.g.lazyvim_check_order = false
 vim.opt.ignorecase = true
 
 -- scrolling
-vim.opt.number = true 
+vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.scrolloff = 8
+
+-- clipboard indentation
+vim.opt.clipboard = "unnamedplus"
 
 -- wrap / break
 
