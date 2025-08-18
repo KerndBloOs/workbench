@@ -19,6 +19,9 @@ elif [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
 
+
+
+
 ###### path configuration ###### 
 
 # add path directories and avoid duplicates
@@ -67,6 +70,10 @@ if command -v devpod >/dev/null 2>&1; then
     # Export the environment variables
     export TMPDIR="$TMPDIR"
 fi
+
+
+
+
 ###### tools ######
 
 # neovim
@@ -91,7 +98,252 @@ if [ -z "$SSH_AUTH_SOCK" ] ; then
     ssh-add
 fi
 
+# tmux
+# Dynamic Tmux Teleport TSH Status Configuration
 
+# Function to detect Teleport session and get connection info
+detect_teleport_session() {
+    local teleport_info=""
+    local is_teleport=false
+    
+    # Check if we're in a Teleport session by looking for environment variables
+    if [[ -n "$TELEPORT_SESSION" ]] || [[ -n "$TSH_SESSION" ]]; then
+        is_teleport=true
+    fi
+    
+    # Alternative: Check if tsh is available and we have an active session
+    if command -v tsh >/dev/null 2>&1; then
+        local tsh_status=$(tsh status --format=json 2>/dev/null)
+        if [[ $? -eq 0 ]] && [[ -n "$tsh_status" ]]; then
+            # Parse JSON to get current cluster info
+            local cluster=$(echo "$tsh_status" | grep -o '"cluster":"[^"]*"' | cut -d'"' -f4)
+            
+            if [[ -n "$cluster" ]]; then
+                teleport_info="${cluster}"
+                is_teleport=true
+            fi
+        fi
+    fi
+    
+    # Fallback: Check for SSH connection that might be through Teleport
+    if [[ "$is_teleport" == false ]] && [[ -n "$SSH_CONNECTION" ]]; then
+        # Check if parent process or connection string suggests Teleport
+        if pgrep -f "tsh.*ssh" >/dev/null 2>&1 || [[ "$SSH_CONNECTION" == *":3022 "* ]]; then
+            is_teleport=true
+            teleport_info="$(whoami)@$(hostname -s)"
+        fi
+    fi
+    
+    echo "${is_teleport}|${teleport_info}"
+}
+
+# Function to get Teleport node/server information
+get_teleport_node_info() {
+    if command -v tsh >/dev/null 2>&1; then
+        # Try to get current node information
+        local node_info=$(tsh ls --format=text 2>/dev/null | grep "$(hostname)" | head -1)
+        if [[ -n "$node_info" ]]; then
+            # Extract relevant info (hostname, labels, etc.)
+            echo "$node_info" | awk '{print $1}'
+        else
+            hostname -s
+        fi
+    else
+        hostname -s
+    fi
+}
+
+# Function to update tmux status based on Teleport connection
+update_tmux_teleport_status() {
+    if [[ -n "$TMUX" ]]; then
+        local teleport_result=$(detect_teleport_session)
+        local is_teleport=$(echo "$teleport_result" | cut -d'|' -f1)
+        local teleport_info=$(echo "$teleport_result" | cut -d'|' -f2)
+        
+        if [[ "$is_teleport" == "true" ]]; then
+            # We're in a Teleport session
+            if [[ -n "$teleport_info" ]]; then
+                tmux set-option -g status-left "⟡ ${teleport_info} "
+            else
+                # Fallback to basic info
+                local node_info=$(get_teleport_node_info)
+                tmux set-option -g status-left "⟡ ${node_info} "
+            fi
+        else
+            # Local session
+            tmux set-option -g status-left "  local "
+        fi
+        # Refresh tmux status
+        tmux refresh-client -S
+    fi
+}
+
+# Function to set up tmux for Teleport detection
+setup_tmux_teleport() {
+    if [[ -n "$TMUX" ]]; then
+        # Set initial status
+        update_tmux_teleport_status
+        
+        # Configure tmux status bar format
+        tmux set-option -g status-left-length 40
+        
+        # Update status on pane changes
+        tmux set-hook -g after-select-pane 'run-shell "bash -c update_tmux_teleport_status"'
+        tmux set-hook -g after-select-window 'run-shell "bash -c update_tmux_teleport_status"'
+    fi
+}
+
+# TSH wrapper function to update tmux status
+tsh() {
+    local cmd="$1"
+    shift
+    
+    if [[ -n "$TMUX" ]]; then
+        case "$cmd" in
+            ssh|login)
+                # Set status to show connecting
+                tmux set-option -g status-left "⟡ connecting... "
+                tmux refresh-client -S
+                
+                # Execute TSH command
+                command tsh "$cmd" "$@"
+                local tsh_exit_code=$?
+                
+                # Update status after connection
+                update_tmux_teleport_status
+                
+                return $tsh_exit_code
+                ;;
+            logout)
+                # Execute logout
+                command tsh "$cmd" "$@"
+                local tsh_exit_code=$?
+                
+                # Reset to local status
+                tmux set-option -g status-left "  local "
+                tmux refresh-client -S
+                
+                return $tsh_exit_code
+                ;;
+            *)
+                # For other tsh commands, just run normally
+                command tsh "$cmd" "$@"
+                ;;
+        esac
+    else
+        # Not in tmux, just run tsh normally
+        command tsh "$cmd" "$@"
+    fi
+}
+
+# Enhanced function to show Teleport cluster and role information
+update_tmux_teleport_status_enhanced() {
+    if [[ -n "$TMUX" ]]; then
+        if command -v tsh >/dev/null 2>&1; then
+            local tsh_status=$(tsh status --format=json 2>/dev/null)
+            
+            if [[ $? -eq 0 ]] && [[ -n "$tsh_status" ]]; then
+                # Parse Teleport session information
+                local cluster=$(echo "$tsh_status" | grep -o '"cluster":"[^"]*"' | cut -d'"' -f4)
+                local roles=$(echo "$tsh_status" | grep -o '"roles":\[[^]]*\]' | sed 's/"roles":\[//; s/\]//; s/"//g')
+                
+                if [[ -n "$cluster" ]]; then
+                    local status_text="⟡ ${cluster}"
+                    
+                    # Add role information if available
+                    if [[ -n "$roles" ]] && [[ "$roles" != "null" ]]; then
+                        local role_count=$(echo "$roles" | tr ',' '\n' | wc -l)
+                        if [[ $role_count -gt 1 ]]; then
+                            status_text="${status_text} (+${role_count} roles)"
+                        else
+                            status_text="${status_text} (${roles})"
+                        fi
+                    fi
+                    
+                    tmux set-option -g status-left "${status_text} "
+                else
+                    # Fallback for active session without full info
+                    tmux set-option -g status-left "⟡ teleport "
+                fi
+            else
+                # Check if we're still in a Teleport SSH session
+                local teleport_result=$(detect_teleport_session)
+                local is_teleport=$(echo "$teleport_result" | cut -d'|' -f1)
+                local teleport_info=$(echo "$teleport_result" | cut -d'|' -f2)
+                
+                if [[ "$is_teleport" == "true" ]] && [[ -n "$teleport_info" ]]; then
+                    tmux set-option -g status-left "⟡ ${teleport_info} "
+                else
+                    tmux set-option -g status-left "  local "
+                fi
+            fi
+        else
+            # tsh not available, fallback to SSH detection
+            if [[ -n "$SSH_CONNECTION" ]]; then
+                tmux set-option -g status-left "$(hostname -s) "
+            else
+                tmux set-option -g status-left "  local "
+            fi
+        fi
+        tmux refresh-client -S
+    fi
+}
+
+# Function to show current Teleport status
+teleport-status() {
+    if command -v tsh >/dev/null 2>&1; then
+        echo "=== Teleport Status ==="
+        tsh status
+        echo
+        echo "=== Available Nodes ==="
+        tsh ls | head -10
+    else
+        echo "tsh command not found. Is Teleport installed?"
+    fi
+}
+
+# Function to quickly connect to Teleport nodes
+teleport-connect() {
+    if [[ -z "$1" ]]; then
+        echo "Usage: teleport-connect <node-name>"
+        echo "Available nodes:"
+        tsh ls --format=text | head -5
+        return 1
+    fi
+    
+    if [[ -n "$TMUX" ]]; then
+        tmux set-option -g status-left "⟡ connecting to $1... "
+        tmux refresh-client -S
+    fi
+    
+    tsh ssh "$1"
+}
+
+# PROMPT_COMMAND integration for automatic updates
+if [[ -n "$TMUX" ]]; then
+    # Add our function to PROMPT_COMMAND if it's not already there
+    if [[ "$PROMPT_COMMAND" != *"update_tmux_teleport_status"* ]]; then
+        if [[ -n "$PROMPT_COMMAND" ]]; then
+            export PROMPT_COMMAND="$PROMPT_COMMAND; update_tmux_teleport_status_enhanced"
+        else
+            export PROMPT_COMMAND="update_tmux_teleport_status_enhanced"
+        fi
+    fi
+    
+    # Initial setup when bashrc is sourced
+    setup_tmux_teleport
+fi
+
+# Optional: Function to manually set custom status with Teleport theme
+tmux-teleport-status() {
+    if [[ -n "$TMUX" ]] && [[ -n "$1" ]]; then
+        tmux set-option -g status-left "⟡ $1 "
+        tmux refresh-client -S
+    else
+        echo "Usage: tmux-teleport-status <status_text>"
+        echo "Must be run inside tmux session"
+    fi
+}
 
 
 ###### aliases ######
