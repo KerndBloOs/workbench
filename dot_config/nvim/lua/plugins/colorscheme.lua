@@ -17,7 +17,25 @@ return {
 		config = function()
 			---@diagnostic disable-next-line: missing-fields
 			require("kanagawa").setup({
+				transparent = false, -- keep normal background, only target line numbers
 				theme = "dragon",
+				colors = {
+					theme = {
+						all = {
+							ui = {
+								bg_gutter = "none",
+							},
+						},
+					},
+				},
+				overrides = function(colors)
+					return {
+						LineNr = { bg = "NONE" },
+						LineNrAbove = { bg = "NONE" },
+						LineNrBelow = { bg = "NONE" },
+						CursorLineNr = { bg = "NONE" },
+					}
+				end,
 			})
 			vim.cmd.colorscheme("kanagawa")
 		end,
