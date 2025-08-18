@@ -9,8 +9,25 @@
 --  },
 --}
 return {
-	"rebelot/kanagawa.nvim",
-	config = function()
-		vim.cmd.colorscheme("kanagawa")
-	end,
+	-- Kanagawa colorscheme
+	{
+		"rebelot/kanagawa.nvim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			---@diagnostic disable-next-line: missing-fields
+			require("kanagawa").setup({
+				theme = "dragon",
+			})
+			vim.cmd.colorscheme("kanagawa")
+		end,
+	},
+
+	-- LazyVim configuration
+	{
+		"LazyVim/LazyVim",
+		opts = {
+			colorscheme = "kanagawa",
+		},
+	},
 }
