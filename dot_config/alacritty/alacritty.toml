@@ -1,0 +1,21 @@
+[font]
+size = 11
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+
+[window]
+decorations = "none"
+startup_mode = "Maximized"
+
+[window.padding]
+x = 7
+y = 5
+
+[general]
+# themes from https://github.com/alacritty/alacritty-theme
+import = ["~/.config/alacritty/themes/themes/kanagawa_dragon.toml"]
+
+[terminal]
+[terminal.shell]
+program = "tmux"
